@@ -39,19 +39,22 @@
 - (IBAction)add:(id)sender
 {
 	[addField setStringValue:@""];
+	[addField becomeFirstResponder];
 	
-	[NSApp beginSheet:addSheet
-	   modalForWindow:[self window]
-		modalDelegate:self
-	   didEndSelector:NULL
+	[NSApp beginSheet:addSheet modalForWindow:[self window]
+		modalDelegate:self didEndSelector:NULL
 		  contextInfo:NULL];
 }
 
 - (IBAction)remove:(id)sender
 {
-	NSMutableArray *blacklist = [adium.preferenceController preferenceForKey:KEY_SF_FILTERS
-																	   group:PREF_GROUP_SPAMFILTER];
+	NSMutableArray *blacklist = [[[adium.preferenceController preferenceForKey:KEY_SF_FILTERS
+																	   group:PREF_GROUP_SPAMFILTER] mutableCopy] autorelease];
+	
 	[blacklist removeObjectAtIndex:[tableView selectedRow]];
+	
+	[adium.preferenceController setPreference:blacklist forKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER];
+	
 	[tableView reloadData];
 }
 
@@ -65,10 +68,15 @@
 {
 	AILogWithSignature(@"Adding %@ to blacklist", [addField stringValue]);
 	
-	NSMutableArray *blacklist = [adium.preferenceController preferenceForKey:KEY_SF_FILTERS
-																	   group:PREF_GROUP_SPAMFILTER];
+	NSMutableArray *blacklist = [[[adium.preferenceController preferenceForKey:KEY_SF_FILTERS
+																		 group:PREF_GROUP_SPAMFILTER] mutableCopy] autorelease];
 	
-	[blacklist addObject:[addField stringValue]];
+	NSMutableDictionary *newWord = [NSMutableDictionary dictionaryWithObjectsAndKeys:[addField stringValue], @"String",
+									[NSNumber numberWithBool:([caseSensitive state] == NSOnState)], @"Case sensitive", nil];
+	
+	[blacklist addObject:newWord];
+	
+	[adium.preferenceController setPreference:blacklist forKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER];
 	
 	[addSheet orderOut:nil];
 	[NSApp endSheet:addSheet];
@@ -81,15 +89,18 @@
 	NSMutableArray *blacklist = [adium.preferenceController preferenceForKey:KEY_SF_FILTERS
 																	   group:PREF_GROUP_SPAMFILTER];
 	
-	return [blacklist objectAtIndex:row];
+	return [[blacklist objectAtIndex:row] valueForKey:[tableColumn identifier]];
 }
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	NSMutableArray *blacklist = [adium.preferenceController preferenceForKey:KEY_SF_FILTERS
-																	   group:PREF_GROUP_SPAMFILTER];
+	NSMutableArray *blacklist = [[[adium.preferenceController preferenceForKey:KEY_SF_FILTERS
+																	   group:PREF_GROUP_SPAMFILTER] mutableCopy] autorelease];
 	
-	[blacklist replaceObjectAtIndex:row withObject:object];
+	[[blacklist objectAtIndex:row] setValue:object forKey:[tableColumn identifier]];
+	
+	[adium.preferenceController setPreference:blacklist forKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER];
+	
 	[tableView reloadData];
 }
 

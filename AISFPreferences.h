@@ -23,6 +23,7 @@
 	IBOutlet NSTableView *tableView;
 	IBOutlet NSWindow *addSheet;
 	IBOutlet NSTextField *addField;
+	IBOutlet NSButton *caseSensitive;
 }
 - (IBAction)add:(id)sender;
 - (IBAction)remove:(id)sender;

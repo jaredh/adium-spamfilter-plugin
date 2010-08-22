@@ -56,8 +56,9 @@
 	NSArray *blacklist = [adium.preferenceController preferenceForKey:KEY_SF_FILTERS
 																group:PREF_GROUP_SPAMFILTER];
 	
-	for (NSString *message in blacklist) {
-		if ([contentObject.message.string rangeOfString:message options:NSCaseInsensitiveSearch].location != NSNotFound) {
+	for (NSDictionary *message in blacklist) {
+		if ([contentObject.message.string rangeOfString:[message valueForKey:@"String"]
+												options:([[message valueForKey:@"Case sensitive"] boolValue] ? 0 : NSCaseInsensitiveSearch)].location != NSNotFound) {
 			hidden = YES;
 			AILogWithSignature(@"Hiding %@ as it matches %@", contentObject, message);
 			break;
