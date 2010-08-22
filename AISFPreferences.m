@@ -112,6 +112,13 @@
 	return [blacklist count];
 }
 
+- (void)tableView:(NSTableView *)tableView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+	if ([[tableColumn identifier] isEqualToString:@"Case sensitive"]) {
+		[cell setTitle:@""];
+	}
+}
+
 - (NSString *)pluginAuthor
 {
 	return @"Thijs Alkemade <thijsalkemade@gmail.com>";
