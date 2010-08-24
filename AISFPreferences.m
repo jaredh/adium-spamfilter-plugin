@@ -22,17 +22,20 @@
 {
     return AIPref_Advanced;
 }
+
 - (NSString *)label
 {
-    return @"SpamFilter";
+    return @"SpamFilter-plugin";
 }
+
 - (NSString *)nibName
 {
     return @"SFPreferences";
 }
+
 - (NSImage *)image
 {
-	return nil;
+	return [NSImage imageNamed:@"block"];
 }
 
 - (void)saveTerms
@@ -45,6 +48,8 @@
 	[adium.preferenceController setPreference:blacklistCopy
 									   forKey:KEY_SF_FILTERS
 										group:PREF_GROUP_SPAMFILTER];
+	
+	[tableView reloadData];
 }
 
 - (IBAction)add:(id)sender
@@ -99,7 +104,7 @@
  */
 - (void)viewDidLoad
 {
-	//[label_explanation setStringValue:@"Hides all messages containing these phrases."];
+	[label_explanation setStringValue:@"Messages are hidden when they contain one of the following phrases. If case sensitive is enabled, \"sPaM\" will not match \"spam\"."];
 	
 	blacklist = [[NSMutableArray alloc] initWithArray:[adium.preferenceController preferenceForKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER]];
 	
@@ -120,7 +125,11 @@
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	[[blacklist objectAtIndex:row] setValue:object forKey:[tableColumn identifier]];
+	NSMutableDictionary *word = [[blacklist objectAtIndex:row] mutableCopy];
+	
+	[word setValue:[object copy] forKey:[tableColumn identifier]];
+	
+	[blacklist replaceObjectAtIndex:row withObject:word];
 	
 	[self saveTerms];
 }

@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		761BD5B612206D2A004B9A39 /* Adium.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 761BD5B512206D2A004B9A39 /* Adium.framework */; };
 		761BD63612206D42004B9A39 /* AISFPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BD63512206D42004B9A39 /* AISFPlugin.m */; };
 		761BD99012208C23004B9A39 /* AISFPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BD98F12208C23004B9A39 /* AISFPreferences.m */; };
 		761BDA4512209826004B9A39 /* SFPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761BDA4412209826004B9A39 /* SFPreferences.xib */; };
+		76F8BB25122481D50020A73A /* Adium.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F8BB24122481D50020A73A /* Adium.framework */; };
+		76F8BB3C122482460020A73A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F8BB3B122482460020A73A /* Cocoa.framework */; };
 		8D576314048677EA00EA77CD /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */; };
 		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
@@ -18,12 +19,13 @@
 /* Begin PBXFileReference section */
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
-		761BD5B512206D2A004B9A39 /* Adium.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Adium.framework; path = ../adium/build/Debug/Adium.framework; sourceTree = SOURCE_ROOT; };
 		761BD63412206D42004B9A39 /* AISFPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AISFPlugin.h; sourceTree = "<group>"; };
 		761BD63512206D42004B9A39 /* AISFPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AISFPlugin.m; sourceTree = "<group>"; };
 		761BD98E12208C23004B9A39 /* AISFPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AISFPreferences.h; sourceTree = "<group>"; };
 		761BD98F12208C23004B9A39 /* AISFPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AISFPreferences.m; sourceTree = "<group>"; };
 		761BDA421220981D004B9A39 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SFPreferences.xib; sourceTree = "<group>"; };
+		76F8BB24122481D50020A73A /* Adium.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Adium.framework; path = ../adium/build/Release/Adium.framework; sourceTree = SOURCE_ROOT; };
+		76F8BB3B122482460020A73A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		8D576316048677EA00EA77CD /* spamfilter.AdiumPlugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = spamfilter.AdiumPlugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -34,7 +36,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D576314048677EA00EA77CD /* CoreFoundation.framework in Frameworks */,
-				761BD5B612206D2A004B9A39 /* Adium.framework in Frameworks */,
+				76F8BB25122481D50020A73A /* Adium.framework in Frameworks */,
+				76F8BB3C122482460020A73A /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,7 +58,8 @@
 		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				761BD5B512206D2A004B9A39 /* Adium.framework */,
+				76F8BB3B122482460020A73A /* Cocoa.framework */,
+				76F8BB24122481D50020A73A /* Adium.framework */,
 				0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */,
 			);
 			name = "External Frameworks and Libraries";
@@ -176,10 +180,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../adium/build/Debug\"",
+					"\"$(SRCROOT)/../adium/build/Release\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -201,16 +205,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../adium/build/Debug\"",
+					"\"$(SRCROOT)/../adium/build/Release\"",
 				);
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				INSTALL_PATH = "\"$(HOME)/Library/Application Support/Adium 2.0/PlugIns/\"";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
 				PRODUCT_NAME = spamfilter;
-				WRAPPER_EXTENSION = bundle;
+				SDKROOT = macosx10.5;
+				WRAPPER_EXTENSION = AdiumPlugin;
 			};
 			name = Release;
 		};

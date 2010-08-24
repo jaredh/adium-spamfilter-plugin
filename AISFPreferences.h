@@ -26,6 +26,8 @@
 	IBOutlet NSTextField		*addField;
 	IBOutlet NSButton			*caseSensitive;
 	
+	IBOutlet NSTextField		*label_explanation;
+	
 	NSMutableArray				*blacklist;
 }
 - (IBAction)add:(id)sender;
