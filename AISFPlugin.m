@@ -17,7 +17,6 @@
 #import "AISFPlugin.h"
 #import <Adium/AIContentObject.h>
 #import <Adium/AIContentMessage.h>
-#import <Adium/AIChat.h>
 
 #import <Adium/AIPreferenceControllerProtocol.h>
 
@@ -25,9 +24,7 @@
 
 - (void)installPlugin
 {
-	preferences = [[AISFPreferences alloc] init];
-	
-	[preferences loadWindow];
+	preferences = [[AISFPreferences preferencePaneForPlugin:self] retain];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(willReceiveContent:)
@@ -65,10 +62,24 @@
 		}
 	}
 	
-	// We use our own "did we hide?" variable, in case something else somewhere has caused this to not display.
 	if (hidden) {
 		contentObject.displayContent = NO;
 	}
+}
+
+- (NSString *)pluginAuthor
+{
+	return @"Thijs Alkemade <thijsalkemade@gmail.com>";
+}
+
+- (NSString *)pluginVersion
+{
+	return @"0.0.1";
+}
+
+- (NSString *)pluginDescription
+{
+	return @"Allows you to specify filters on incoming messages.";
 }
 
 @end

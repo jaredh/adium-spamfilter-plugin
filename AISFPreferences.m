@@ -18,22 +18,33 @@
 
 @implementation AISFPreferences
 
-- (id)init
+- (AIPreferenceCategory)category
 {
-	if ((self = [super initWithWindowNibName:@"SFPreferences"])) {
-		NSMutableArray *blacklist = [adium.preferenceController preferenceForKey:KEY_SF_FILTERS
-																		   group:PREF_GROUP_SPAMFILTER];
-		
-		if (!blacklist) {
-			blacklist = [[NSMutableArray alloc] init];
-			
-			[adium.preferenceController setPreference:blacklist
-											   forKey:KEY_SF_FILTERS
-												group:PREF_GROUP_SPAMFILTER];
-		}
-	}
+    return AIPref_Advanced;
+}
+- (NSString *)label
+{
+    return @"SpamFilter";
+}
+- (NSString *)nibName
+{
+    return @"SFPreferences";
+}
+- (NSImage *)image
+{
+	return nil;
+}
+
+- (void)saveTerms
+{
+	NSMutableArray *blacklistCopy = [[blacklist mutableCopy] autorelease];
 	
-	return self;
+	// Never save a blank term.
+	[blacklistCopy removeObject:@""];
+	
+	[adium.preferenceController setPreference:blacklistCopy
+									   forKey:KEY_SF_FILTERS
+										group:PREF_GROUP_SPAMFILTER];
 }
 
 - (IBAction)add:(id)sender
@@ -41,21 +52,9 @@
 	[addField setStringValue:@""];
 	[addField becomeFirstResponder];
 	
-	[NSApp beginSheet:addSheet modalForWindow:[self window]
+	[NSApp beginSheet:addSheet modalForWindow:[view window]
 		modalDelegate:self didEndSelector:NULL
 		  contextInfo:NULL];
-}
-
-- (IBAction)remove:(id)sender
-{
-	NSMutableArray *blacklist = [[[adium.preferenceController preferenceForKey:KEY_SF_FILTERS
-																	   group:PREF_GROUP_SPAMFILTER] mutableCopy] autorelease];
-	
-	[blacklist removeObjectAtIndex:[tableView selectedRow]];
-	
-	[adium.preferenceController setPreference:blacklist forKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER];
-	
-	[tableView reloadData];
 }
 
 - (IBAction)cancel:(id)sender
@@ -68,47 +67,66 @@
 {
 	AILogWithSignature(@"Adding %@ to blacklist", [addField stringValue]);
 	
-	NSMutableArray *blacklist = [[[adium.preferenceController preferenceForKey:KEY_SF_FILTERS
-																		 group:PREF_GROUP_SPAMFILTER] mutableCopy] autorelease];
-	
 	NSMutableDictionary *newWord = [NSMutableDictionary dictionaryWithObjectsAndKeys:[addField stringValue], @"String",
 									[NSNumber numberWithBool:([caseSensitive state] == NSOnState)], @"Case sensitive", nil];
 	
 	[blacklist addObject:newWord];
 	
-	[adium.preferenceController setPreference:blacklist forKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER];
+	[self saveTerms];
 	
 	[addSheet orderOut:nil];
 	[NSApp endSheet:addSheet];
-
+	
 	[tableView reloadData];
+}
+
+/*!
+ * @brief Remove the selected rows
+ */
+- (IBAction)remove:(id)sender
+{
+	NSIndexSet *indexes = [tableView selectedRowIndexes];
+	
+	[blacklist removeObjectsAtIndexes:indexes];
+	[self saveTerms];
+	
+	[tableView reloadData];
+	[tableView deselectAll:nil];
+}
+
+/*!
+ * @brief The view loaded
+ */
+- (void)viewDidLoad
+{
+	//[label_explanation setStringValue:@"Hides all messages containing these phrases."];
+	
+	blacklist = [[NSMutableArray alloc] initWithArray:[adium.preferenceController preferenceForKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER]];
+	
+	[super viewDidLoad];
+}
+
+- (void)viewWillClose
+{
+	[blacklist release]; blacklist = nil;
+	
+	[super viewWillClose];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	NSMutableArray *blacklist = [adium.preferenceController preferenceForKey:KEY_SF_FILTERS
-																	   group:PREF_GROUP_SPAMFILTER];
-	
 	return [[blacklist objectAtIndex:row] valueForKey:[tableColumn identifier]];
 }
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	NSMutableArray *blacklist = [[[adium.preferenceController preferenceForKey:KEY_SF_FILTERS
-																	   group:PREF_GROUP_SPAMFILTER] mutableCopy] autorelease];
-	
 	[[blacklist objectAtIndex:row] setValue:object forKey:[tableColumn identifier]];
 	
-	[adium.preferenceController setPreference:blacklist forKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER];
-	
-	[tableView reloadData];
+	[self saveTerms];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-	NSMutableArray *blacklist = [adium.preferenceController preferenceForKey:KEY_SF_FILTERS
-																	   group:PREF_GROUP_SPAMFILTER];
-	
 	return [blacklist count];
 }
 
@@ -117,21 +135,6 @@
 	if ([[tableColumn identifier] isEqualToString:@"Case sensitive"]) {
 		[cell setTitle:@""];
 	}
-}
-
-- (NSString *)pluginAuthor
-{
-	return @"Thijs Alkemade <thijsalkemade@gmail.com>";
-}
-
-- (NSString *)pluginVersion
-{
-	return @"0.0.1";
-}
-
-- (NSString *)pluginDescription
-{
-	return @"Allows you to specify filters on incoming messages.";
 }
 
 @end

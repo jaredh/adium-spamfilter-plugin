@@ -18,12 +18,15 @@
 
 #import "AISFPlugin.h"
 #import <Adium/AIPreferenceControllerProtocol.h>
+#import <Adium/AIAdvancedPreferencePane.h>
 
-@interface AISFPreferences : NSWindowController {
-	IBOutlet NSTableView *tableView;
-	IBOutlet NSWindow *addSheet;
-	IBOutlet NSTextField *addField;
-	IBOutlet NSButton *caseSensitive;
+@interface AISFPreferences : AIAdvancedPreferencePane {
+	IBOutlet NSTableView		*tableView;
+	IBOutlet NSWindow			*addSheet;
+	IBOutlet NSTextField		*addField;
+	IBOutlet NSButton			*caseSensitive;
+	
+	NSMutableArray				*blacklist;
 }
 - (IBAction)add:(id)sender;
 - (IBAction)remove:(id)sender;
