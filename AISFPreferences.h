@@ -24,7 +24,9 @@
 	IBOutlet NSTableView		*tableView;
 	IBOutlet NSWindow			*addSheet;
 	IBOutlet NSTextField		*addField;
-	IBOutlet NSButton			*caseSensitive;
+	
+	IBOutlet NSButton			*phraseIsCaseSensitive;
+	IBOutlet NSButton			*phraseIsRegularExpression;
 	
 	IBOutlet NSTextField		*label_explanation;
 	

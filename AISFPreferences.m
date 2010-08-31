@@ -73,7 +73,8 @@
 	AILogWithSignature(@"Adding %@ to blacklist", [addField stringValue]);
 	
 	NSMutableDictionary *newWord = [NSMutableDictionary dictionaryWithObjectsAndKeys:[addField stringValue], @"String",
-									[NSNumber numberWithBool:([caseSensitive state] == NSOnState)], @"Case sensitive", nil];
+									[NSNumber numberWithBool:([phraseIsCaseSensitive state] == NSOnState)], @"Case sensitive",
+									[NSNumber numberWithBool:([phraseIsRegularExpression state] == NSOnState)], @"Regular Expression", nil];
 	
 	[blacklist addObject:newWord];
 	
@@ -104,7 +105,7 @@
  */
 - (void)viewDidLoad
 {
-	[label_explanation setStringValue:@"Messages are hidden when they contain one of the following phrases. If case sensitive is enabled, \"sPaM\" will not match \"spam\"."];
+	[label_explanation setStringValue:@"Messages are hidden when they match one of the following phrases. If case sensitive is enabled, \"sPaM\" will not match \"spam\"."];
 	
 	blacklist = [[NSMutableArray alloc] initWithArray:[adium.preferenceController preferenceForKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER]];
 	
@@ -141,7 +142,7 @@
 
 - (void)tableView:(NSTableView *)tableView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	if ([[tableColumn identifier] isEqualToString:@"Case sensitive"]) {
+	if ([[tableColumn identifier] isEqualToString:@"Case sensitive"] || [[tableColumn identifier] isEqualToString:@"Regular Expression"]) {
 		[cell setTitle:@""];
 	}
 }

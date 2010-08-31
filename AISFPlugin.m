@@ -54,7 +54,30 @@
 																group:PREF_GROUP_SPAMFILTER];
 	
 	for (NSDictionary *message in blacklist) {
-		if ([contentObject.message.string rangeOfString:[message valueForKey:@"String"]
+		if ([[message valueForKey:@"Regular Expression"] boolValue]) {
+			
+			NSPredicate *regex;
+			
+			if ([[message valueForKey:@"Case sensitive"] boolValue]) {
+				regex = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", [message valueForKey:@"String"]];
+			} else {
+				regex = [NSPredicate predicateWithFormat:@"SELF MATCHES[c] %@", [message valueForKey:@"String"]];
+			}
+			
+			@try {
+				if ([regex evaluateWithObject:contentObject.message.string]) {
+					hidden = YES;
+					AILogWithSignature(@"Hiding %@ as it matches regex %@", contentObject, message);
+					break;
+				}
+			}
+			@catch (NSException * e) {
+				AILog(@"Regex %@ seems to have failed: %@", message, e);
+				// show the error after a delay, so the incoming message doesn't have to wait
+				[self performSelector:@selector(error:) withObject:[NSDictionary dictionaryWithObjectsAndKeys:message, @"Message", e, @"Exception", nil] afterDelay:0];
+			}
+			
+		} else if ([contentObject.message.string rangeOfString:[message valueForKey:@"String"]
 												options:([[message valueForKey:@"Case sensitive"] boolValue] ? 0 : NSCaseInsensitiveSearch)].location != NSNotFound) {
 			hidden = YES;
 			AILogWithSignature(@"Hiding %@ as it matches %@", contentObject, message);
@@ -66,6 +89,15 @@
 		contentObject.displayContent = NO;
 	}
 }
+				 
+- (void)error:(NSDictionary *)context
+{
+	NSRunAlertPanel([NSString stringWithFormat:@"Evaluation of regular expression \"%@\" failed.", [[context valueForKey:@"Message"] valueForKey:@"String"]],
+					[NSString stringWithFormat:@"Adium SpamFilter plugin encountered an error when evaluating this regular expression:\n\n%@", [context valueForKey:@"Exception"]],
+					@"OK",
+					nil,
+					nil);
+}
 
 - (NSString *)pluginAuthor
 {
@@ -74,7 +106,7 @@
 
 - (NSString *)pluginVersion
 {
-	return @"0.0.1";
+	return @"0.0.2";
 }
 
 - (NSString *)pluginDescription
