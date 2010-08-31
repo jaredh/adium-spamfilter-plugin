@@ -24,6 +24,10 @@
 #define KEY_SF_FILTERS @"SF Filters"
 #define PREF_GROUP_SPAMFILTER @"SpamFilter Plugin"
 
+#define KEY_SF_PHRASE @"String"
+#define KEY_SF_CASE_SENSITIVE @"Case Sensitive"
+#define KEY_SF_REGEX @"Regular Expression"
+
 @class AISFPreferences;
 
 @interface AISFPlugin : NSObject <AIPlugin> {

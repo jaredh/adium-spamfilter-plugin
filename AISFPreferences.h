@@ -31,6 +31,7 @@
 	IBOutlet NSTextField		*label_explanation;
 	
 	NSMutableArray				*blacklist;
+	NSMutableDictionary			*currentlyEditing;
 }
 - (IBAction)add:(id)sender;
 - (IBAction)remove:(id)sender;
@@ -41,5 +42,7 @@
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row;
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row;
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView;
+
+- (void)editObject:(NSDictionary *)inObject;
 
 @end

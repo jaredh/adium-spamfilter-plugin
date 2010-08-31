@@ -207,19 +207,22 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = NO;
+				DSTROOT = "/tmp/$(PROJECT_NAME).dst";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../adium/build/Release\"",
 				);
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "\"$(HOME)/Library/Application Support/Adium 2.0/PlugIns/\"";
+				INSTALL_PATH = "\"$(HOME)/Library/Application\\ Support/Adium\\ 2.0/PlugIns/\"";
 				OTHER_LDFLAGS = (
 					"-undefined",
 					dynamic_lookup,
 				);
 				PRODUCT_NAME = spamfilter;
 				SDKROOT = macosx10.5;
+				SKIP_INSTALL = NO;
 				WRAPPER_EXTENSION = AdiumPlugin;
 			};
 			name = Release;

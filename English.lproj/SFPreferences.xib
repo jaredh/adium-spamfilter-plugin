@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="23"/>
-			<integer value="43"/>
+			<integer value="53"/>
+			<integer value="22"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -76,7 +76,7 @@
 										<object class="NSMutableArray" key="NSTableColumns">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 											<object class="NSTableColumn" id="161040152">
-												<string key="NSIdentifier">Case sensitive</string>
+												<string key="NSIdentifier">Case Sensitive</string>
 												<double key="NSWidth">84</double>
 												<double key="NSMinWidth">40</double>
 												<double key="NSMaxWidth">1000</double>
@@ -252,7 +252,6 @@
 								<int key="NSvFlags">-2147483392</int>
 								<string key="NSFrame">{{1, 185}, {438, 15}}</string>
 								<reference key="NSSuperview" ref="789821158"/>
-								<bool key="NSEnabled">YES</bool>
 								<int key="NSsFlags">1</int>
 								<reference key="NSTarget" ref="789821158"/>
 								<string key="NSAction">_doScroller:</string>
@@ -277,7 +276,7 @@
 						<string key="NSFrame">{{5, 34}, {326, 154}}</string>
 						<reference key="NSSuperview" ref="821482609"/>
 						<reference key="NSNextKeyView" ref="455047774"/>
-						<int key="NSsFlags">690</int>
+						<int key="NSsFlags">562</int>
 						<reference key="NSVScroller" ref="308268912"/>
 						<reference key="NSHScroller" ref="337151649"/>
 						<reference key="NSContentView" ref="455047774"/>
@@ -354,8 +353,8 @@
 				<int key="NSWindowStyleMask">31</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{140, 334}, {399, 124}}</string>
-				<int key="NSWTFlags">-1535639552</int>
-				<string key="NSWindowTitle">Window</string>
+				<int key="NSWTFlags">-461897728</int>
+				<string key="NSWindowTitle">Edit Phrase</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<nil key="NSViewClass"/>
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
@@ -403,7 +402,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="91945047">
 								<int key="NSCellFlags">68288064</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">Add word:</string>
+								<string key="NSContents">Phrase:</string>
 								<reference key="NSSupport" ref="941022885"/>
 								<reference key="NSControlView" ref="462415365"/>
 								<reference key="NSBackgroundColor" ref="483544159"/>

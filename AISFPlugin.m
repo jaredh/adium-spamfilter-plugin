@@ -32,6 +32,10 @@
 											   object:nil];
 	
 	AILogWithSignature(@"Adium spamfilter plugin loaded.");
+	
+	// the dynamic nib loading for preference panes can cause problems when editing outside the preferences.
+	// so use this trick to load it anyways.
+	[preferences view];
 }
 
 - (void)uninstallPlugin
@@ -54,14 +58,14 @@
 																group:PREF_GROUP_SPAMFILTER];
 	
 	for (NSDictionary *message in blacklist) {
-		if ([[message valueForKey:@"Regular Expression"] boolValue]) {
+		if ([[message valueForKey:KEY_SF_REGEX] boolValue]) {
 			
 			NSPredicate *regex;
 			
-			if ([[message valueForKey:@"Case sensitive"] boolValue]) {
-				regex = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", [message valueForKey:@"String"]];
+			if ([[message valueForKey:KEY_SF_CASE_SENSITIVE] boolValue]) {
+				regex = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", [message valueForKey:KEY_SF_PHRASE]];
 			} else {
-				regex = [NSPredicate predicateWithFormat:@"SELF MATCHES[c] %@", [message valueForKey:@"String"]];
+				regex = [NSPredicate predicateWithFormat:@"SELF MATCHES[c] %@", [message valueForKey:KEY_SF_PHRASE]];
 			}
 			
 			@try {
@@ -71,14 +75,14 @@
 					break;
 				}
 			}
-			@catch (NSException * e) {
+			@catch (NSException *e) {
 				AILog(@"Regex %@ seems to have failed: %@", message, e);
 				// show the error after a delay, so the incoming message doesn't have to wait
-				[self performSelector:@selector(error:) withObject:[NSDictionary dictionaryWithObjectsAndKeys:message, @"Message", e, @"Exception", nil] afterDelay:0];
+				[self performSelector:@selector(error:) withObject:[NSDictionary dictionaryWithObjectsAndKeys:message, @"Message", e, @"Exception", nil] afterDelay:0.1];
 			}
 			
-		} else if ([contentObject.message.string rangeOfString:[message valueForKey:@"String"]
-												options:([[message valueForKey:@"Case sensitive"] boolValue] ? 0 : NSCaseInsensitiveSearch)].location != NSNotFound) {
+		} else if ([contentObject.message.string rangeOfString:[message valueForKey:KEY_SF_PHRASE]
+												options:([[message valueForKey:KEY_SF_CASE_SENSITIVE] boolValue] ? 0 : NSCaseInsensitiveSearch)].location != NSNotFound) {
 			hidden = YES;
 			AILogWithSignature(@"Hiding %@ as it matches %@", contentObject, message);
 			break;
@@ -92,11 +96,15 @@
 				 
 - (void)error:(NSDictionary *)context
 {
-	NSRunAlertPanel([NSString stringWithFormat:@"Evaluation of regular expression \"%@\" failed.", [[context valueForKey:@"Message"] valueForKey:@"String"]],
-					[NSString stringWithFormat:@"Adium SpamFilter plugin encountered an error when evaluating this regular expression:\n\n%@", [context valueForKey:@"Exception"]],
-					@"OK",
-					nil,
-					nil);
+	NSInteger result = NSRunAlertPanel([NSString stringWithFormat:@"Evaluation of regular expression \"%@\" failed.", [[context valueForKey:@"Message"] valueForKey:KEY_SF_PHRASE]],
+									   [NSString stringWithFormat:@"Adium SpamFilter plugin encountered an error when evaluating this regular expression:\n\n%@", [context valueForKey:@"Exception"]],
+									   @"OK",
+									   @"Edit expression",
+									   nil);
+	
+	if (result == NSAlertAlternateReturn) {
+		[preferences editObject:[context valueForKey:@"Message"]];
+	}
 }
 
 - (NSString *)pluginAuthor

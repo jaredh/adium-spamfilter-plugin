@@ -54,6 +54,8 @@
 
 - (IBAction)add:(id)sender
 {
+	[currentlyEditing release]; currentlyEditing = nil;
+	
 	[addField setStringValue:@""];
 	[addField becomeFirstResponder];
 	
@@ -72,11 +74,19 @@
 {
 	AILogWithSignature(@"Adding %@ to blacklist", [addField stringValue]);
 	
-	NSMutableDictionary *newWord = [NSMutableDictionary dictionaryWithObjectsAndKeys:[addField stringValue], @"String",
-									[NSNumber numberWithBool:([phraseIsCaseSensitive state] == NSOnState)], @"Case sensitive",
-									[NSNumber numberWithBool:([phraseIsRegularExpression state] == NSOnState)], @"Regular Expression", nil];
-	
-	[blacklist addObject:newWord];
+	if (!currentlyEditing) {
+		NSMutableDictionary *newWord = [NSMutableDictionary dictionaryWithObjectsAndKeys:[addField stringValue], KEY_SF_PHRASE,
+										[NSNumber numberWithBool:([phraseIsCaseSensitive state] == NSOnState)], KEY_SF_CASE_SENSITIVE,
+										[NSNumber numberWithBool:([phraseIsRegularExpression state] == NSOnState)], KEY_SF_REGEX, nil];
+		
+		
+		[blacklist addObject:newWord];
+	} else {
+		[currentlyEditing setValue:[addField stringValue] forKey:KEY_SF_PHRASE];
+		[currentlyEditing setValue:[NSNumber numberWithBool:([phraseIsCaseSensitive state] == NSOnState)] forKey:KEY_SF_CASE_SENSITIVE];
+		[currentlyEditing setValue:[NSNumber numberWithBool:([phraseIsRegularExpression state] == NSOnState)] forKey:KEY_SF_REGEX];
+	}
+
 	
 	[self saveTerms];
 	
@@ -142,9 +152,21 @@
 
 - (void)tableView:(NSTableView *)tableView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	if ([[tableColumn identifier] isEqualToString:@"Case sensitive"] || [[tableColumn identifier] isEqualToString:@"Regular Expression"]) {
+	if ([[tableColumn identifier] isEqualToString:KEY_SF_CASE_SENSITIVE] || [[tableColumn identifier] isEqualToString:KEY_SF_REGEX]) {
 		[cell setTitle:@""];
 	}
+}
+
+- (void)editObject:(NSDictionary *)inObject
+{
+	currentlyEditing = [inObject retain];
+	
+	[addField setStringValue:[inObject valueForKey:KEY_SF_PHRASE]];
+	[phraseIsCaseSensitive setState:[[inObject valueForKey:KEY_SF_CASE_SENSITIVE] integerValue]];
+	[phraseIsRegularExpression setState:[[inObject valueForKey:KEY_SF_REGEX] integerValue]];
+	
+	[addSheet makeKeyAndOrderFront:self];
+	[addSheet setLevel:NSModalPanelWindowLevel];
 }
 
 @end
