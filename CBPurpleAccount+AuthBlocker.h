@@ -1,6 +1,6 @@
 /* 
- * Adium SpamFilter Plugin - Blacklist annoying messages in Adium
- * Copyright (C) 2010 Thijs Alkemade
+ * Adium is the legal property of its developers, whose names are listed in the copyright file included
+ * with this source distribution.
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation; either version 2 of the License,
@@ -15,25 +15,9 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import <Adium/AIPlugin.h>
-#import <Adium/AIContentControllerProtocol.h>
+#import <Adium/AIAccount.h>
+#import <AdiumLibpurple/CBPurpleAccount.h>
 #import <Adium/ESDebugAILog.h>
 
-#import "AISFPreferences.h"
+#define KEY_ICQ_BLOCK_CYRILLIC_AYTHORIZATION_REQUESTS	@"ICQ:BlockCyrillicAuthorizationRequests"
 
-#define KEY_SF_FILTERS @"SF Filters"
-#define PREF_GROUP_SPAMFILTER @"SpamFilter Plugin"
-
-#define KEY_SF_PHRASE @"String"
-#define KEY_SF_CASE_SENSITIVE @"Case Sensitive"
-#define KEY_SF_REGEX @"Regular Expression"
-
-#define KEY_SF_SHOULD_BLOCK_CYRILLIC @"ICQ:Should Block Authorization Requests Containing Cyrillic"
-
-@class AISFPreferences;
-
-@interface AISFPlugin : NSObject <AIPlugin> {
-	AISFPreferences *preferences;
-}
-
-@end

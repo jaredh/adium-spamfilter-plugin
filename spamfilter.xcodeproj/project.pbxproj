@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		76018AB512C3DF6800FC4AF1 /* CBPurpleAccount+AuthBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = 76018AB412C3DF6800FC4AF1 /* CBPurpleAccount+AuthBlocker.m */; };
+		76018D0112C3E77400FC4AF1 /* AdiumLibpurple.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76018D0012C3E77400FC4AF1 /* AdiumLibpurple.framework */; };
 		761BD63612206D42004B9A39 /* AISFPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BD63512206D42004B9A39 /* AISFPlugin.m */; };
 		761BD99012208C23004B9A39 /* AISFPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BD98F12208C23004B9A39 /* AISFPreferences.m */; };
 		761BDA4512209826004B9A39 /* SFPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761BDA4412209826004B9A39 /* SFPreferences.xib */; };
@@ -19,6 +21,9 @@
 /* Begin PBXFileReference section */
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
+		76018AB312C3DF6800FC4AF1 /* CBPurpleAccount+AuthBlocker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CBPurpleAccount+AuthBlocker.h"; sourceTree = "<group>"; };
+		76018AB412C3DF6800FC4AF1 /* CBPurpleAccount+AuthBlocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBPurpleAccount+AuthBlocker.m"; sourceTree = "<group>"; };
+		76018D0012C3E77400FC4AF1 /* AdiumLibpurple.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdiumLibpurple.framework; path = "../adium-1.4/build/Release/AdiumLibpurple.framework"; sourceTree = SOURCE_ROOT; };
 		761BD63412206D42004B9A39 /* AISFPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AISFPlugin.h; sourceTree = "<group>"; };
 		761BD63512206D42004B9A39 /* AISFPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AISFPlugin.m; sourceTree = "<group>"; };
 		761BD98E12208C23004B9A39 /* AISFPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AISFPreferences.h; sourceTree = "<group>"; };
@@ -38,6 +43,7 @@
 				8D576314048677EA00EA77CD /* CoreFoundation.framework in Frameworks */,
 				76F8BB25122481D50020A73A /* Adium.framework in Frameworks */,
 				76F8BB3C122482460020A73A /* Cocoa.framework in Frameworks */,
+				76018D0112C3E77400FC4AF1 /* AdiumLibpurple.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +64,7 @@
 		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				76018D0012C3E77400FC4AF1 /* AdiumLibpurple.framework */,
 				76F8BB3B122482460020A73A /* Cocoa.framework */,
 				76F8BB24122481D50020A73A /* Adium.framework */,
 				0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */,
@@ -82,6 +89,8 @@
 				761BD63512206D42004B9A39 /* AISFPlugin.m */,
 				761BD98E12208C23004B9A39 /* AISFPreferences.h */,
 				761BD98F12208C23004B9A39 /* AISFPreferences.m */,
+				76018AB312C3DF6800FC4AF1 /* CBPurpleAccount+AuthBlocker.h */,
+				76018AB412C3DF6800FC4AF1 /* CBPurpleAccount+AuthBlocker.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -151,6 +160,7 @@
 			files = (
 				761BD63612206D42004B9A39 /* AISFPlugin.m in Sources */,
 				761BD99012208C23004B9A39 /* AISFPreferences.m in Sources */,
+				76018AB512C3DF6800FC4AF1 /* CBPurpleAccount+AuthBlocker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +194,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../adium/build/Release\"",
+					"\"$(SRCROOT)/../adium-1.4/build/Release\"",
+					"\"$(SRCROOT)/../adium-1.4/Frameworks\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -211,9 +223,11 @@
 				DSTROOT = "/tmp/$(PROJECT_NAME).dst";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../adium/build/Release\"",
+					"\"$(SRCROOT)/../adium-1.4/build/Release\"",
+					"\"$(SRCROOT)/../adium-1.4/Frameworks\"",
 				);
 				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../adium-1.4/Frameworks/libglib.framework/Headers\"";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "\"$(HOME)/Library/Application\\ Support/Adium\\ 2.0/PlugIns/\"";
 				OTHER_LDFLAGS = (
@@ -223,6 +237,7 @@
 				PRODUCT_NAME = spamfilter;
 				SDKROOT = macosx10.5;
 				SKIP_INSTALL = NO;
+				VALID_ARCHS = "i386 ppc ppc64 ppc7400 ppc970";
 				WRAPPER_EXTENSION = AdiumPlugin;
 			};
 			name = Release;

@@ -32,17 +32,26 @@
 	
 	NSMutableArray				*blacklist;
 	NSMutableDictionary			*currentlyEditing;
+	
+	NSNumber					*shouldIgnoreAuthorizationRequests;
 }
+
++ (AISFPreferences *)sharedInstance;
+
 - (IBAction)add:(id)sender;
 - (IBAction)remove:(id)sender;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)accept:(id)sender;
 
+- (IBAction)save:(id)sender;
+
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row;
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row;
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView;
 
 - (void)editObject:(NSDictionary *)inObject;
+
+@property (copy) NSNumber *shouldIgnoreAuthorizationRequests;
 
 @end

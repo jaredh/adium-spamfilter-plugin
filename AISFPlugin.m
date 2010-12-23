@@ -24,18 +24,15 @@
 
 - (void)installPlugin
 {
-	preferences = [[AISFPreferences preferencePaneForPlugin:self] retain];
+	//preferences = [[AISFPreferences preferencePaneForPlugin:self] retain];
+	preferences = [[AISFPreferences sharedInstance] retain];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(willReceiveContent:)
 												 name:Content_WillReceiveContent
 											   object:nil];
 	
-	AILogWithSignature(@"Adium spamfilter plugin loaded.");
-	
-	// the dynamic nib loading for preference panes can cause problems when editing outside the preferences.
-	// so use this trick to load it anyways.
-	[preferences view];
+	AILogWithSignature(@"Adium spamfilter plugin loaded: %@", [preferences view]);
 }
 
 - (void)uninstallPlugin

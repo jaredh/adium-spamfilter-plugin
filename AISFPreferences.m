@@ -16,7 +16,22 @@
 
 #import "AISFPreferences.h"
 
+static AISFPreferences	*sharedInstance = nil;
+
 @implementation AISFPreferences
+
+@synthesize shouldIgnoreAuthorizationRequests;
+
++ (AISFPreferences *)sharedInstance
+{	
+	@synchronized(self) {
+		if (!sharedInstance) {
+			sharedInstance = [[self alloc] init];
+		}
+	}
+	
+	return sharedInstance;
+}
 
 - (AIPreferenceCategory)category
 {
@@ -38,8 +53,9 @@
 	return [NSImage imageNamed:@"block"];
 }
 
-- (void)saveTerms
+- (IBAction)save:(id)sender
 {
+	AILogWithSignature(@"Saving: %@", self.shouldIgnoreAuthorizationRequests);
 	NSMutableArray *blacklistCopy = [[blacklist mutableCopy] autorelease];
 	
 	// Never save a blank term.
@@ -47,6 +63,10 @@
 	
 	[adium.preferenceController setPreference:blacklistCopy
 									   forKey:KEY_SF_FILTERS
+										group:PREF_GROUP_SPAMFILTER];
+	
+	[adium.preferenceController setPreference:self.shouldIgnoreAuthorizationRequests
+									   forKey:KEY_SF_SHOULD_BLOCK_CYRILLIC
 										group:PREF_GROUP_SPAMFILTER];
 	
 	[tableView reloadData];
@@ -88,7 +108,7 @@
 	}
 
 	
-	[self saveTerms];
+	[self save:nil];
 	
 	[addSheet orderOut:nil];
 	[NSApp endSheet:addSheet];
@@ -104,10 +124,15 @@
 	NSIndexSet *indexes = [tableView selectedRowIndexes];
 	
 	[blacklist removeObjectsAtIndexes:indexes];
-	[self saveTerms];
+	[self save:nil];
 	
 	[tableView reloadData];
 	[tableView deselectAll:nil];
+}
+
+- (NSView *)view
+{
+	return [[super view] retain];
 }
 
 /*!
@@ -119,12 +144,16 @@
 	
 	blacklist = [[NSMutableArray alloc] initWithArray:[adium.preferenceController preferenceForKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER]];
 	
+	self.shouldIgnoreAuthorizationRequests = [adium.preferenceController preferenceForKey:KEY_SF_SHOULD_BLOCK_CYRILLIC group:PREF_GROUP_SPAMFILTER];
+	
 	[super viewDidLoad];
 }
 
 - (void)viewWillClose
 {
 	[blacklist release]; blacklist = nil;
+	
+	[[super view] release];
 	
 	[super viewWillClose];
 }
@@ -142,7 +171,7 @@
 	
 	[blacklist replaceObjectAtIndex:row withObject:word];
 	
-	[self saveTerms];
+	[self save:nil];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
