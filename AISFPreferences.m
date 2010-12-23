@@ -66,7 +66,7 @@ static AISFPreferences	*sharedInstance = nil;
 										group:PREF_GROUP_SPAMFILTER];
 	
 	[adium.preferenceController setPreference:self.shouldIgnoreAuthorizationRequests
-									   forKey:KEY_SF_SHOULD_BLOCK_CYRILLIC
+									   forKey:KEY_SF_SHOULD_BLOCK_AUTH
 										group:PREF_GROUP_SPAMFILTER];
 	
 	[tableView reloadData];
@@ -144,7 +144,7 @@ static AISFPreferences	*sharedInstance = nil;
 	
 	blacklist = [[NSMutableArray alloc] initWithArray:[adium.preferenceController preferenceForKey:KEY_SF_FILTERS group:PREF_GROUP_SPAMFILTER]];
 	
-	self.shouldIgnoreAuthorizationRequests = [adium.preferenceController preferenceForKey:KEY_SF_SHOULD_BLOCK_CYRILLIC group:PREF_GROUP_SPAMFILTER];
+	self.shouldIgnoreAuthorizationRequests = [adium.preferenceController preferenceForKey:KEY_SF_SHOULD_BLOCK_AUTH group:PREF_GROUP_SPAMFILTER];
 	
 	[super viewDidLoad];
 }

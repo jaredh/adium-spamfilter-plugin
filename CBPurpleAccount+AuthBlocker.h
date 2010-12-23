@@ -18,6 +18,3 @@
 #import <Adium/AIAccount.h>
 #import <AdiumLibpurple/CBPurpleAccount.h>
 #import <Adium/ESDebugAILog.h>
-
-#define KEY_ICQ_BLOCK_CYRILLIC_AYTHORIZATION_REQUESTS	@"ICQ:BlockCyrillicAuthorizationRequests"
-
