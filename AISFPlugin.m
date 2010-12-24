@@ -19,6 +19,7 @@
 #import <Adium/AIContentMessage.h>
 
 #import <Adium/AIPreferenceControllerProtocol.h>
+#import </usr/include/objc/objc-class.h>
 
 @implementation AISFPlugin
 
@@ -31,6 +32,26 @@
 											 selector:@selector(willReceiveContent:)
 												 name:Content_WillReceiveContent
 											   object:nil];
+	
+	AILogWithSignature(@"Doing risky stuff: swizzling authorizationRequestWithDict:");
+	
+	Method orig_method = nil, alt_method = nil;
+	orig_method = class_getInstanceMethod([CBPurpleAccount class], @selector(authorizationRequestWithDict:));
+    alt_method = class_getInstanceMethod([CBPurpleAccount class], @selector(_authorizationRequestWithDict:));
+	
+	if ((orig_method != nil) && (alt_method != nil))
+	{
+        char *temp1;
+        IMP temp2;
+		
+        temp1 = orig_method->method_types;
+        orig_method->method_types = alt_method->method_types;
+        alt_method->method_types = temp1;
+		
+        temp2 = orig_method->method_imp;
+        orig_method->method_imp = alt_method->method_imp;
+        alt_method->method_imp = temp2;
+	}
 	
 	AILogWithSignature(@"Adium spamfilter plugin loaded: %@", [preferences view]);
 }
@@ -111,7 +132,7 @@
 
 - (NSString *)pluginVersion
 {
-	return @"0.0.2";
+	return @"0.1.0";
 }
 
 - (NSString *)pluginDescription

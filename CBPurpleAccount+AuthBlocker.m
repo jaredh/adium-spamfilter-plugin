@@ -20,7 +20,7 @@
 
 @implementation CBPurpleAccount (AuthBlocker)
 
-- (id)authorizationRequestWithDict:(NSDictionary*)dict {
+- (id)_authorizationRequestWithDict:(NSDictionary*)dict {
 	if ([AISFPreferences sharedInstance].shouldIgnoreAuthorizationRequests) {
 		NSString *reason = [dict valueForKey:@"Reason"];
 		
@@ -58,7 +58,7 @@
 		}
 	}
 	
-	return [super authorizationRequestWithDict:dict];
+	return [self _authorizationRequestWithDict:dict];
 }
 
 @end

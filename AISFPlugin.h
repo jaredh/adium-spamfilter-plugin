@@ -16,6 +16,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <Adium/AIPlugin.h>
+#import <AdiumLibpurple/CBPurpleAccount.h>
 #import <Adium/AIContentControllerProtocol.h>
 #import <Adium/ESDebugAILog.h>
 
