@@ -16,5 +16,4 @@
 
 #import <Cocoa/Cocoa.h>
 #import <Adium/AIAccount.h>
-#import <AdiumLibpurple/CBPurpleAccount.h>
 #import <Adium/ESDebugAILog.h>

@@ -18,6 +18,10 @@
 #import "AISFPreferences.h"
 #import <Adium/AIPreferenceControllerProtocol.h>
 
+@class AIMedia;
+
+#import <AdiumLibpurple/CBPurpleAccount.h>
+
 @implementation CBPurpleAccount (AuthBlocker)
 
 - (id)_authorizationRequestWithDict:(NSDictionary*)dict {

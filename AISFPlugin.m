@@ -21,6 +21,10 @@
 #import <Adium/AIPreferenceControllerProtocol.h>
 #import </usr/include/objc/objc-class.h>
 
+@class AIMedia;
+
+#import <AdiumLibpurple/CBPurpleAccount.h>
+
 @implementation AISFPlugin
 
 - (void)installPlugin
@@ -36,22 +40,15 @@
 	AILogWithSignature(@"Doing risky stuff: swizzling authorizationRequestWithDict:");
 	
 	Method orig_method = nil, alt_method = nil;
+	SEL orig = @selector(authorizationRequestWithDict:);
+	SEL new = @selector(authorizationRequestWithDict:);
 	orig_method = class_getInstanceMethod([CBPurpleAccount class], @selector(authorizationRequestWithDict:));
     alt_method = class_getInstanceMethod([CBPurpleAccount class], @selector(_authorizationRequestWithDict:));
-	
-	if ((orig_method != nil) && (alt_method != nil))
-	{
-        char *temp1;
-        IMP temp2;
-		
-        temp1 = orig_method->method_types;
-        orig_method->method_types = alt_method->method_types;
-        alt_method->method_types = temp1;
-		
-        temp2 = orig_method->method_imp;
-        orig_method->method_imp = alt_method->method_imp;
-        alt_method->method_imp = temp2;
-	}
+
+    if(class_addMethod([CBPurpleAccount class], orig, method_getImplementation(alt_method), method_getTypeEncoding(alt_method)))
+        class_replaceMethod([CBPurpleAccount class], new, method_getImplementation(orig_method), method_getTypeEncoding(orig_method));
+    else
+		method_exchangeImplementations(orig_method, alt_method);
 	
 	AILogWithSignature(@"Adium spamfilter plugin loaded: %@", [preferences view]);
 }
