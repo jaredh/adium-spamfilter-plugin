@@ -40,7 +40,7 @@ static AISFPreferences	*sharedInstance = nil;
 
 - (NSString *)label
 {
-    return @"SpamFilter-plugin";
+    return @"Spam Filter";
 }
 
 - (NSString *)nibName
@@ -50,7 +50,7 @@ static AISFPreferences	*sharedInstance = nil;
 
 - (NSImage *)image
 {
-	return [NSImage imageNamed:@"block"];
+	return [NSImage imageNamed:@"msg-block-contact"];
 }
 
 - (IBAction)save:(id)sender
